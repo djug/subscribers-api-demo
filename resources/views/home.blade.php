@@ -14,7 +14,23 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                   <form>
+                     <div class="form-group">
+                       <label for="exampleInputEmail1">Email address</label>
+                       <input type="email" class="form-control" value="{{ $user->email }}" readonly>
+                     </div>
+
+                     <div class="form-group">
+                       <label for="exampleInputEmail1">ID</label>
+                       <input type="id" class="form-control" value="{{ $user->id }}" readonly>
+                     </div>
+
+                     <div class="form-group">
+                       <label for="exampleInputEmail1">API Key</label>
+                       <input type="api_key" class="form-control" value="{{ $user->api_key }}" readonly>
+                     </div>
+                    </form>
+
                 </div>
             </div>
         </div>
