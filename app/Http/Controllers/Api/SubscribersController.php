@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Subscriber;
 use App\SubscribersRepository;
+use App\RequestsHelpers;
 
 class SubscribersController extends Controller
 {
@@ -14,7 +15,7 @@ class SubscribersController extends Controller
 
     public function __construct(Request $request, SubscribersRepository $subscribersRepository)
     {
-        $userId = $this->getUserIdFromApiKey($request);
+        $userId = RequestsHelpers::getUserIdFromApiKey($request);
 
         $this->subscribersRepository = $subscribersRepository;
         $this->subscribersRepository->setUserId($userId);
@@ -46,18 +47,5 @@ class SubscribersController extends Controller
     public function delete($idOrEmail)
     {
         return $this->subscribersRepository->delete($idOrEmail);
-    }
-
-
-    private function getUserIdFromApiKey($request)
-    {
-        $apiKey = $request->header('X-MailerLite-ApiKey');
-
-        $user = User::where('api_key', $apiKey)->first();
-        if ($user) {
-            return $user->id;
-        }
-
-        throw new \Exception("API Key doesn't not much any active user", 1);
     }
 }

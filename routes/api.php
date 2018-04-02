@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['namespace' => 'Api'], function () {
+Route::group(['namespace' => 'Api', 'middleware' => ['apiKey.auth']], function () {
     Route::get('subscribers', 'SubscribersController@all');
     Route::post('subscribers', 'SubscribersController@create');
     Route::get('subscribers/{id}', 'SubscribersController@get');
