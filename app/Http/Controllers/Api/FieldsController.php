@@ -4,31 +4,31 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\FieldsRepository;
+use App\AcceptedFieldsRepository;
 use App\AcceptedField as Field;
 use App\Helpers;
 use Validator;
 
 class FieldsController extends Controller
 {
-    private $fieldsRepository;
+    private $acceptedFieldsRepository;
 
-    public function __construct(Request $request, FieldsRepository $fieldsRepository)
+    public function __construct(Request $request, AcceptedFieldsRepository $acceptedFieldsRepository)
     {
         $userId = Helpers::getUserIdFromApiKey($request);
 
-        $this->fieldsRepository = $fieldsRepository;
-        $this->fieldsRepository->setUserId($userId);
+        $this->acceptedFieldsRepository = $acceptedFieldsRepository;
+        $this->acceptedFieldsRepository->setUserId($userId);
     }
 
     public function all()
     {
-        return $this->fieldsRepository->all();
+        return $this->acceptedFieldsRepository->all();
     }
 
     public function get($id)
     {
-        return $this->fieldsRepository->get($id);
+        return $this->acceptedFieldsRepository->get($id);
     }
 
     public function create(Request $request)
@@ -43,7 +43,7 @@ class FieldsController extends Controller
             return response()->json(['error' => ['code' => 400, 'message' => $message]]);
         }
 
-        return $this->fieldsRepository->create($inputs);
+        return $this->acceptedFieldsRepository->create($inputs);
     }
 
 
@@ -51,11 +51,11 @@ class FieldsController extends Controller
     {
         $inputs  = $request->all();
 
-        return $this->fieldsRepository->update($inputs, $id);
+        return $this->acceptedFieldsRepository->update($inputs, $id);
     }
 
     public function delete($idOrEmail)
     {
-        return $this->fieldsRepository->delete($idOrEmail);
+        return $this->acceptedFieldsRepository->delete($idOrEmail);
     }
 }

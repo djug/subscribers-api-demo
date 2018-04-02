@@ -3,7 +3,7 @@ namespace App;
 
 use App\AcceptedField as Field;
 
-class FieldsRepository
+class AcceptedFieldsRepository
 {
     private $userId;
 
