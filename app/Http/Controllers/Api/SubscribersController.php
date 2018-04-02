@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Subscriber;
 use App\SubscribersRepository;
-use App\RequestsHelpers;
+use App\Helpers;
+use Validator;
 
 class SubscribersController extends Controller
 {
@@ -15,7 +16,7 @@ class SubscribersController extends Controller
 
     public function __construct(Request $request, SubscribersRepository $subscribersRepository)
     {
-        $userId = RequestsHelpers::getUserIdFromApiKey($request);
+        $userId = Helpers::getUserIdFromApiKey($request);
 
         $this->subscribersRepository = $subscribersRepository;
         $this->subscribersRepository->setUserId($userId);
@@ -28,7 +29,17 @@ class SubscribersController extends Controller
 
     public function create(Request $request)
     {
-        $inputs  = $request->all();
+        $inputs = $request->all();
+        $inputs['domain'] = Helpers::getDomainFromEmail($inputs['email']);
+
+        $validator = Validator::make($inputs, Subscriber::getValidationRules());
+
+        if ($validator->fails()) {
+            $message = Helpers::prettifyErrorMessage($validator->errors());
+
+            return response()->json(['error' => ['code' => 400, 'message' => $message]]);
+        }
+
         return $this->subscribersRepository->create($inputs);
     }
 

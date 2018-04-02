@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\RequestsHelpers;
+use App\Helpers;
 
 class ApiAuthentication
 {
@@ -16,7 +16,7 @@ class ApiAuthentication
      */
     public function handle($request, Closure $next)
     {
-        $userId = RequestsHelpers::getUserIdFromApiKey($request);
+        $userId = Helpers::getUserIdFromApiKey($request);
         if (! $userId) {
                    return response()->json(['error' => ['code' => 302, 'message' => "API-Key Unauthorized"]]);
         }
