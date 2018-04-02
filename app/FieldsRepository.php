@@ -52,7 +52,7 @@ class FieldsRepository
                     $existingField,
                     array_merge(
                         $existingField,
-                        [   'value' => $this->castValue($value),
+                        [   'value' => $value,
                             'accepted_field_id' => $fieldInformation->id
                         ]
                     )

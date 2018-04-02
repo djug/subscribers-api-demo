@@ -18,7 +18,7 @@ class ApiAuthentication
     {
         $userId = Helpers::getUserIdFromApiKey($request);
         if (! $userId) {
-                   return response()->json(['error' => ['code' => 302, 'message' => "API-Key Unauthorized"]]);
+                   return response()->json(['error' => ['code' => 302, 'message' => "API-Key Unauthorized"]], 302);
         }
 
         return $next($request);

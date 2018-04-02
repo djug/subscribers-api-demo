@@ -43,15 +43,17 @@ class SubscribersController extends Controller
         if ($validator->fails()) {
             $message = Helpers::prettifyErrorMessage($validator->errors());
 
-            return response()->json(['error' => ['code' => 400, 'message' => $message]]);
+            return response()->json(['error' => ['code' => 400, 'message' => $message]], 400);
         }
 
 
         $subscriber = $this->subscribersRepository->create($inputs);
-        $fields = $inputs['fields'];
+        if (isset($inputs['fields'])) {
+            $fields = $inputs['fields'];
+            $this->fieldsRepository->setsubscriberId($subscriber->id);
+            $this->fieldsRepository->createMultiple($fields);
+        }
 
-        $this->fieldsRepository->setsubscriberId($subscriber->id);
-        $this->fieldsRepository->createMultiple($fields);
         return $subscriber;
     }
 
@@ -63,8 +65,21 @@ class SubscribersController extends Controller
     public function update(Request $request, $id)
     {
         $inputs  = $request->all();
+        $subscriber = $this->get($id);
 
-        return $this->subscribersRepository->update($inputs, $id);
+        $updatedSubscriberData = array_merge($subscriber->toArray(), $inputs);
+
+        $updatedSubscriberData['domain'] = Helpers::getDomainFromEmail($updatedSubscriberData['email']);
+
+        $validator = Validator::make($updatedSubscriberData, Subscriber::getValidationRules());
+
+        if ($validator->fails()) {
+            $message = Helpers::prettifyErrorMessage($validator->errors());
+
+            return response()->json(['error' => ['code' => 400, 'message' => $message]], 400);
+        }
+
+        return $this->subscribersRepository->update($updatedSubscriberData, $id);
     }
 
     public function delete($idOrEmail)

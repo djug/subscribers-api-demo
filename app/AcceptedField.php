@@ -9,6 +9,8 @@ class AcceptedField extends Model
 {
     use OwnedByTrait;
 
+    protected $hidden = ['user_id'];
+
     protected $fillable = ['title', 'type', 'user_id'];
     public static $acceptedTypes = ['date', 'number', 'string', 'boolean'];
     public static function getValidationRules()

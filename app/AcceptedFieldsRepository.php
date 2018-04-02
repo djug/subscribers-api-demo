@@ -44,7 +44,9 @@ class AcceptedFieldsRepository
         $title = $inputs['title'];
         $inputs = array_merge($inputs, ['user_id' => $this->userId]);
         $field = Field::where('id', $id)->ownedBy($this->userId)->first();
-        $field->update($inputs);
+        if ($field) {
+            $field->update($inputs);
+        }
 
         return $field;
     }
