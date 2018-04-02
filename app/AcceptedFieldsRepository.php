@@ -51,7 +51,7 @@ class AcceptedFieldsRepository
 
     public function delete($id)
     {
-        $field = Field::Where('id', $emailOrId)->ownedBy($this->userId)->first();
+        $field = Field::Where('id', $id)->ownedBy($this->userId)->first();
 
         if ($field) {
             $field->delete();
@@ -60,6 +60,4 @@ class AcceptedFieldsRepository
         }
         return false;
     }
-
-
 }

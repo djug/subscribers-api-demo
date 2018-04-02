@@ -7,19 +7,23 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Subscriber;
 use App\SubscribersRepository;
+use App\FieldsRepository;
 use App\Helpers;
 use Validator;
 
 class SubscribersController extends Controller
 {
     private $subscribersRepository;
+    private $fieldsRepository;
 
-    public function __construct(Request $request, SubscribersRepository $subscribersRepository)
+    public function __construct(Request $request, SubscribersRepository $subscribersRepository, FieldsRepository $fieldsRepository)
     {
         $userId = Helpers::getUserIdFromApiKey($request);
 
         $this->subscribersRepository = $subscribersRepository;
         $this->subscribersRepository->setUserId($userId);
+        $this->fieldsRepository = $fieldsRepository;
+        $this->fieldsRepository->setUserId($userId);
     }
 
     public function all()
@@ -30,6 +34,8 @@ class SubscribersController extends Controller
     public function create(Request $request)
     {
         $inputs = $request->all();
+
+
         $inputs['domain'] = Helpers::getDomainFromEmail($inputs['email']);
 
         $validator = Validator::make($inputs, Subscriber::getValidationRules());
@@ -40,7 +46,13 @@ class SubscribersController extends Controller
             return response()->json(['error' => ['code' => 400, 'message' => $message]]);
         }
 
-        return $this->subscribersRepository->create($inputs);
+
+        $subscriber = $this->subscribersRepository->create($inputs);
+        $fields = $inputs['fields'];
+
+        $this->fieldsRepository->setsubscriberId($subscriber->id);
+        $this->fieldsRepository->createMultiple($fields);
+        return $subscriber;
     }
 
     public function get($idOrEmail)

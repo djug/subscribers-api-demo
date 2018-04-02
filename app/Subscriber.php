@@ -14,6 +14,8 @@ class Subscriber extends Model
 
     protected $hidden = ['user_id'];
 
+    protected $appends = ['fields'];
+
     public static function getValidationRules()
     {
         $validationRules = [
@@ -26,5 +28,15 @@ class Subscriber extends Model
         return $validationRules;
     }
 
+    public function fields()
+    {
+        return $this->hasMany(Field::class);
+    }
 
+    public function getFieldsAttribute()
+    {
+        $fields = $this->fields()->get();
+
+        return $fields;
+    }
 }
