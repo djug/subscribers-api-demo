@@ -4,27 +4,60 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
 use App\Subscriber;
+use App\SubscribersRepository;
 
 class SubscribersController extends Controller
 {
-    public function all()
+    private $subscribersRepository;
+
+    public function __construct(Request $request, SubscribersRepository $subscribersRepository)
     {
-        return 'all';
+        $userId = $this->getUserIdFromApiKey($request);
+
+        $this->subscribersRepository = $subscribersRepository;
+        $this->subscribersRepository->setUserId($userId);
     }
 
-    public function createSubscriber(Request $request)
+    public function all()
     {
-        $userId = $request->header('user-id');
+        return $this->subscribersRepository->all();
+    }
 
+    public function create(Request $request)
+    {
         $inputs  = $request->all();
-        $email = $inputs['email'];
-        $name = $inputs['name'];
-        $inputs = array_merge($inputs, ['user_id' => $userId]);
-        $uniqueSubscriberId = ['user_id' => $userId, 'email' => $email];
+        return $this->subscribersRepository->create($inputs);
+    }
 
-        $subscriber = Subscriber::updateOrCreate($uniqueSubscriberId, $inputs);
+    public function get($idOrEmail)
+    {
+        return $this->subscribersRepository->get($idOrEmail);
+    }
 
-        return $subscriber;
+    public function update(Request $request, $id)
+    {
+        $inputs  = $request->all();
+
+        return $this->subscribersRepository->update($inputs, $id);
+    }
+
+    public function delete($idOrEmail)
+    {
+        return $this->subscribersRepository->delete($idOrEmail);
+    }
+
+
+    private function getUserIdFromApiKey($request)
+    {
+        $apiKey = $request->header('X-MailerLite-ApiKey');
+
+        $user = User::where('api_key', $apiKey)->first();
+        if ($user) {
+            return $user->id;
+        }
+
+        throw new \Exception("API Key doesn't not much any active user", 1);
     }
 }

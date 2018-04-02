@@ -19,5 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Api'], function () {
     Route::get('subscribers', 'SubscribersController@all');
-    Route::post('subscribers', 'SubscribersController@createSubscriber');
+    Route::post('subscribers', 'SubscribersController@create');
+    Route::get('subscribers/{id}', 'SubscribersController@get');
+    Route::put('subscribers/{id}', 'SubscribersController@update');
+    Route::delete('subscribers/{id}', 'SubscribersController@delete');
 });

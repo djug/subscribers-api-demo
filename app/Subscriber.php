@@ -8,5 +8,10 @@ class Subscriber extends Model
 {
     protected $fillable = ['email', 'name', 'state', 'user_id'];
 
-    protected $hidden = ['id', 'user_id'];
+    protected $hidden = ['user_id'];
+
+    public function scopeOwnedBy($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
 }
