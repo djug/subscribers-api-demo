@@ -8,6 +8,8 @@ use App\Rules\ActiveDomain;
 
 class Subscriber extends Model
 {
+    use OwnedByTrait;
+
     protected $fillable = ['email', 'name', 'state', 'user_id'];
 
     protected $hidden = ['user_id'];
@@ -24,8 +26,5 @@ class Subscriber extends Model
         return $validationRules;
     }
 
-    public function scopeOwnedBy($query, $userId)
-    {
-        return $query->where('user_id', $userId);
-    }
+
 }
