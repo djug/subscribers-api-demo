@@ -37,11 +37,6 @@ class FieldsRepository
         return $field;
     }
 
-    public function create($title, $value)
-    {
-        Field::create('');
-    }
-
     public function createMultiple($fields)
     {
 
@@ -49,7 +44,6 @@ class FieldsRepository
             $fieldInformation = AcceptedField::where('title', $title)->ownedBy($this->userId)->first();
             $createdFields = [];
             if ($fieldInformation) {
-
                 $existingField = ['title' => $title,
                                 'subscriber_id' => $this->subscriberId,
                                 'user_id' => $this->userId,
@@ -58,29 +52,14 @@ class FieldsRepository
                     $existingField,
                     array_merge(
                         $existingField,
-                        [   'value' => $value,
-                            'accepted_field_id' => $fieldInformation->id]
+                        [   'value' => $this->castValue($value),
+                            'accepted_field_id' => $fieldInformation->id
+                        ]
                     )
                 );
                 $createdFields[] = $field->toArray();
             }
         }
         return $createdFields;
-    }
-
-    public function update($inputs, $id)
-    {
-    }
-
-    public function delete($id)
-    {
-        $field = Field::Where('id', $id)->ownedBy($this->userId)->first();
-
-        if ($field) {
-            $field->delete();
-
-            return true;
-        }
-        return false;
     }
 }
