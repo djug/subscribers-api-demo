@@ -2,12 +2,12 @@
 Subscribers API (demo)
 ---
 This is a demo about how a subscribers API (for a newsletter for instance) could be implemented.
-This demo allows managing subscribers (**C**reate, **R**ead, **U**pdate and **D**elete) with or without additional fields. each subscriber can have 0 or multiple field, but these fields and their types should be created by the user (the owner of the newsletter) beforehand, otherwise any *non accepted* field will be ignored.
-In addition, this API allow searching/updating/deleting subscribers either by their ID or their email addresses.
+This demo allows managing subscribers (**C**reate, **R**ead, **U**pdate and **D**elete) with or without additional fields. each subscriber can have 0 or multiple fields, but these fields and their types should be created by the user (the owner of the newsletter) beforehand, otherwise any *non accepted* field will be ignored.
+In addition, this API allows searching/updating/deleting subscribers either by their ID or by their email addresses.
 
 ## How to install
 
-   - Clone this repo: clone https://github.com/djug/subscribers-api-demo.git
+   - Clone this repo: `clone https://github.com/djug/subscribers-api-demo.git`
    - `cd subscribers-api-demo/`
    - Install the dependencies: `composer install`
    - Create a new database and create/update your `.env` file accordingly
@@ -17,7 +17,7 @@ In addition, this API allow searching/updating/deleting subscribers either by th
    
 ## How to get the API Key
 - create a new account and login
-- you'll get redirected to the dashboard page that contain your API key
+- you'll get redirected to the dashboard page that contains your API key
 
 ![enter image description here](http://youghourta.com/wp-content/uploads/2018/04/api-key.png)
 
@@ -34,7 +34,7 @@ curl -X POST http://127.0.0.1:8000/api/fields/ \
 ```
 Result:
 ``` 
-{"title":"job","type":"string","updated_at":"2018-04-03 17:16:21","created_at":"2018-04-03 17:16:21","id":1}%
+{"title":"job","type":"string","updated_at":"2018-04-03 17:16:21","created_at":"2018-04-03 17:16:21","id":1}
 ```
 
 ### Update a field
@@ -103,8 +103,8 @@ pdated_at":"2018-04-03 17:25:36","fields":[{"title":"Job Title","value":"Back-en
 # Test
 this project includes some tests that you can run locally.
 in order to run the tests we need the following steps:
-- Create a new testing database (let's name it `test_api_db`
--  run the migration on it `DB_DATABASE=test_api_db php  artisan migrate` (we are passing the name of the test DB as an environment variable to override temporarily the   `DB_DATABASE` environment variable 
+- Create a new testing database (let's name it `test_api_db`)
+-  run the migration on it `DB_DATABASE=test_api_db php  artisan migrate` (we are passing the name of the test DB as an environment variable to override temporarily the   `DB_DATABASE` environment variable)
 - Update the `phpunit.xml`
     we need to add the following lines to the `phpunit.xml` file between ` <php>` and ` </php>`  tags, so we can run tests using our test database:
     ```
@@ -116,5 +116,5 @@ in order to run the tests we need the following steps:
 - run `vendor/bin/phpunit`
 
 ## To do
-- validate / cast the fields before adding them (useful especially for `date` fields
+- validate / cast the fields before adding them (useful especially for `date` fields)
 - write an SDK and its documentation
