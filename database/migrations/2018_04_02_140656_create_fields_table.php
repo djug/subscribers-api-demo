@@ -17,6 +17,7 @@ class CreateFieldsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('value')->nullable();
+            /* we can of course link the field to just its subscriber and get the user from it, but since this is just a demo application adding a field for the user will make our lives a little bit easier*/
             $table->integer('user_id')->unsigned();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('subscriber_id')->unsigned();
