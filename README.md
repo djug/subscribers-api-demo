@@ -2,7 +2,7 @@
 Subscribers API (demo)
 ---
 This is a demo about how a subscribers API (for a newsletter for instance) could be implemented.
-This demo allows managing subscribers (*C*reate, *R*ead, *U*pdate and *D*elete) with or without additional fields. each subscriber can have 0 or multiple field, but these fields and their types should be created by the user (the owner of the newsletter) beforehand, otherwise any ~non accepted~ field will be ignored.
+This demo allows managing subscribers (**C**reate, **R**ead, **U**pdate and **D**elete) with or without additional fields. each subscriber can have 0 or multiple field, but these fields and their types should be created by the user (the owner of the newsletter) beforehand, otherwise any *non accepted* field will be ignored.
 In addition, this API allow searching/updating/deleting subscribers either by their ID or their email addresses.
 
 ## How to install
