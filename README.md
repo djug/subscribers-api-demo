@@ -7,11 +7,12 @@ In addition, this API allows searching/updating/deleting subscribers either by t
 
 ## How to install
 
-   - Clone this repo: `clone https://github.com/djug/subscribers-api-demo.git`
+   - Clone this repo: `git clone https://github.com/djug/subscribers-api-demo.git`
    - `cd subscribers-api-demo/`
    - Install the dependencies: `composer install`
    - Create a new database and create/update your `.env` file accordingly
    -  run the migrations `php artisan migrate`
+   - generate an encryption  key `php artisan key:generate`
    - Lunch the built-in PHP webserver `php artisan serve`
    - Visit http://127.0.0.1:8000/ to see the demo homepage
    
@@ -27,10 +28,7 @@ In addition, this API allows searching/updating/deleting subscribers either by t
 ## How to test
 ### Create a field
 ```
-curl -X POST http://127.0.0.1:8000/api/fields/ \  
--d '{"title": "job", "type" : "string"}' \  
--H "Content-Type: application/json" \  
--H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics" 
+curl -X POST http://127.0.0.1:8000/api/fields/ -d '{"title": "job", "type" : "string"}' -H "Content-Type: application/json" -H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
 ```
 Result:
 ``` 
@@ -39,10 +37,7 @@ Result:
 
 ### Update a field
 ```
--X PUT http://127.0.0.1:8000/api/fields/1 \  
--d '{"title": "Job Title", "type" : "string"}' \  
--H "Content-Type: application/json" \  
--H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
+curl -X PUT http://127.0.0.1:8000/api/fields/1 -d '{"title": "Job Title", "type" : "string"}' -H "Content-Type: application/json" -H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
 ```
 Result:
 ```
@@ -52,11 +47,7 @@ Result:
 
 ### Create a new subscriber
 ```
-curl -X POST http://127.0.0.1:8000/api/subscribers \  
--d '{"email":"contact@youghourta.com", "name": "Youghourta", "fields": {"Job Title":"developer", "company": "djugprog"}}'  
-\  
--H "Content-Type: application/json" \  
--H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
+curl -X POST http://127.0.0.1:8000/api/subscribers -d '{"email":"contact@youghourta.com", "name": "Youghourta", "fields": {"Job Title":"developer", "company": "djugprog"}}' -H "Content-Type: application/json" -H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
 ```
 
 Result:
@@ -68,17 +59,11 @@ Notice that the `company` field was ignored, since it is not an "accepted" field
 
 ### Update an existing subscriber:
 ```
-curl -X PUT http://127.0.0.1:8000/api/subscribers/1 \  
--d '{"state":"unsubscribed"}' \  
--H "Content-Type: application/json" \  
--H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
+curl -X PUT http://127.0.0.1:8000/api/subscribers/1 -d '{"state":"unsubscribed"}' -H "Content-Type: application/json" -H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
 ```
 we can also use the email address instead of the ID in the previous request
 ```
-curl -X PUT http://127.0.0.1:8000/api/subscribers/contact@youghourta.com \
--d '{"state":"unsubscribed"}' \
--H "Content-Type: application/json" \
--H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
+curl -X PUT http://127.0.0.1:8000/api/subscribers/contact@youghourta.com -d '{"state":"unsubscribed"}' -H "Content-Type: application/json" -H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
 ```
 
 result:
@@ -88,10 +73,7 @@ pdated_at":"2018-04-03 17:25:36","fields":[{"title":"Job Title","value":"develop
 ```
 we can also update the fields:
 ```
-curl -X PUT http://127.0.0.1:8000/api/subscribers/1 \  
--d '{"fields": {"Job Title":"Back-end Developer"}}' \  
--H "Content-Type: application/json" \  
--H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
+curl -X PUT http://127.0.0.1:8000/api/subscribers/1 -d '{"fields": {"Job Title":"Back-end Developer"}}' -H "Content-Type: application/json" -H "X-MailerLite-ApiKey: yYsZaEJOgm7E0zK9VpbUZV87wokj82o3wJBND1LmhgZI3axsyrIxsiCz3ics"
 ```
 
 result:
