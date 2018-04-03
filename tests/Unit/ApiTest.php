@@ -245,5 +245,22 @@ class ApiTest extends TestCase
 
     }
 
+    /**
+     * @test
+     */
+    public function it_doenst_add_fields_to_subscriber_if_fields_were_not_accepted()
+    {
+
+        $response = $this->withHeaders([
+                    'X-MailerLite-ApiKey' =>  $this->apiKey,
+
+                ])->json('POST', 'api/subscribers', ["email" => "contact@youghourta.com", "name" => "Youghourta", "fields" => ['city' => "Ain Oussera"]]);
+
+        $data  = $response->getData();
+
+        $this->assertEmpty($data->fields);
+
+    }
+
 
 }
