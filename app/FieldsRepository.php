@@ -37,7 +37,7 @@ class FieldsRepository
         return $field;
     }
 
-    public function createMultiple($fields)
+    public function createOrUpdateMultiple($fields)
     {
 
         foreach ($fields as $title => $value) {

@@ -49,7 +49,7 @@ class SubscribersController extends Controller
         if (isset($inputs['fields'])) {
             $fields = $inputs['fields'];
             $this->fieldsRepository->setsubscriberId($subscriber->id);
-            $this->fieldsRepository->createMultiple($fields);
+            $this->fieldsRepository->createOrUpdateMultiple($fields);
         }
 
         return $subscriber;
@@ -85,7 +85,14 @@ class SubscribersController extends Controller
             return response()->json(['error' => ['code' => 400, 'message' => $message]], 400);
         }
 
-        return $this->subscribersRepository->update($updatedSubscriberData, $idOrEmail);
+        $subscriber = $this->subscribersRepository->update($updatedSubscriberData, $idOrEmail);
+
+        if (isset($inputs['fields'])) {
+            $fields = $inputs['fields'];
+            $this->fieldsRepository->setsubscriberId($subscriber->id);
+            $this->fieldsRepository->createOrUpdateMultiple($fields);
+        }
+        return $subscriber;
     }
 
     public function delete($idOrEmail)
