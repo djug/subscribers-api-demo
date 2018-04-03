@@ -55,9 +55,7 @@ class FieldsController extends Controller
     public function update(Request $request, $id)
     {
         $inputs  = $request->all();
-
         $field = $this->get($id);
-
         $updatedFieldData = array_merge($field->toArray(), $inputs);
 
         $validator = Validator::make($updatedFieldData, Field::getValidationRules());
@@ -71,11 +69,11 @@ class FieldsController extends Controller
         return $this->acceptedFieldsRepository->update($inputs, $id);
     }
 
-    public function delete($idOrEmail)
+    public function delete($id)
     {
-        $field = $this->get($idOrEmail);
+        $field = $this->get($id);
 
-        $result = $this->acceptedFieldsRepository->delete($idOrEmail);
+        $result = $this->acceptedFieldsRepository->delete($id);
         if ($result) {
             return response()->json("", 204);
         }

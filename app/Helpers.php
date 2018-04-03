@@ -1,5 +1,6 @@
 <?php
 namespace App;
+
 use App\User;
 
 class Helpers
@@ -19,7 +20,7 @@ class Helpers
 
     public static function prettifyErrorMessage($errors)
     {
-        $message =  implode ($errors->all(), ' and ');
+        $message =  implode($errors->all(), ' and ');
 
         return $message;
     }

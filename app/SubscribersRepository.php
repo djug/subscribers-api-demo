@@ -40,12 +40,12 @@ class SubscribersRepository
         return $subscriber;
     }
 
-    public function update($inputs, $id)
+    public function update($inputs, $idOrEmail)
     {
         $email = $inputs['email'];
         $inputs = array_merge($inputs, ['user_id' => $this->userId]);
         $uniqueSubscriberId = ['user_id' => $this->userId, 'email' => $email];
-        $subscriber = Subscriber::where('email', $id)->orWhere('id', $id)->ownedBy($this->userId)->first();
+        $subscriber = Subscriber::where('email', $idOrEmail)->orWhere('id', $idOrEmail)->ownedBy($this->userId)->first();
         $subscriber->update($inputs);
 
         return $subscriber;

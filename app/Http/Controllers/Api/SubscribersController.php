@@ -10,6 +10,7 @@ use App\SubscribersRepository;
 use App\FieldsRepository;
 use App\Helpers;
 use Validator;
+use App\Exceptions\ModelNotFound;
 
 class SubscribersController extends Controller
 {
@@ -34,8 +35,6 @@ class SubscribersController extends Controller
     public function create(Request $request)
     {
         $inputs = $request->all();
-
-
         $inputs['domain'] = Helpers::getDomainFromEmail($inputs['email']);
 
         $validator = Validator::make($inputs, Subscriber::getValidationRules());
@@ -45,7 +44,6 @@ class SubscribersController extends Controller
 
             return response()->json(['error' => ['code' => 400, 'message' => $message]], 400);
         }
-
 
         $subscriber = $this->subscribersRepository->create($inputs);
         if (isset($inputs['fields'])) {
@@ -59,13 +57,21 @@ class SubscribersController extends Controller
 
     public function get($idOrEmail)
     {
-        return $this->subscribersRepository->get($idOrEmail);
+        $subscriber = $this->subscribersRepository->get($idOrEmail);
+
+        if (! $subscriber) {
+            throw new ModelNotFound("subscriber");
+        }
+        return $subscriber;
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $idOrEmail)
     {
         $inputs  = $request->all();
-        $subscriber = $this->get($id);
+        $subscriber = $this->get($idOrEmail);
+        if (! $subscriber) {
+            return response()->json(['error' => ['code' => 123, 'message' => "Subscriber not found"]], 404);
+        }
 
         $updatedSubscriberData = array_merge($subscriber->toArray(), $inputs);
 
@@ -79,11 +85,16 @@ class SubscribersController extends Controller
             return response()->json(['error' => ['code' => 400, 'message' => $message]], 400);
         }
 
-        return $this->subscribersRepository->update($updatedSubscriberData, $id);
+        return $this->subscribersRepository->update($updatedSubscriberData, $idOrEmail);
     }
 
     public function delete($idOrEmail)
     {
-        return $this->subscribersRepository->delete($idOrEmail);
+        $subscriber = $this->get($idOrEmail);
+
+        $result = $this->subscribersRepository->delete($idOrEmail);
+        if ($result) {
+            return response()->json("", 204);
+        }
     }
 }

@@ -14,7 +14,7 @@ class ModelNotFound extends Exception
 
     public function render()
     {
-        $model = $this->model;
+        $model = ucfirst($this->model);
 
         return response()->json(['error' => ['code' => 123, 'message' => "{$model} not found"]], 404);
     }
