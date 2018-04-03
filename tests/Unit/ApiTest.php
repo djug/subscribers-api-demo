@@ -102,7 +102,6 @@ class ApiTest extends TestCase
                 ])->json('POST', 'api/subscribers', ["email" => "contact@this-is-not-youghourta-website.com", "name" => "Youghourta"]);
 
         $data  = $response->getData();
-
         $response->assertStatus(400);
     }
 
@@ -138,19 +137,21 @@ class ApiTest extends TestCase
         $response = $this->withHeaders([
                     'X-MailerLite-ApiKey' =>  $this->apiKey,
 
-                ])->json('POST', 'api/subscribers', ["email" => "contact@youghourta.com", "name" => "Youghourta", 'state' => 'junk']);
+                ])->json('POST', 'api/subscribers', ["email" => "contact@youghourta.com", "name" => "Youghourta", 'state' => 'active']);
+
 
         $data  = $response->getData();
-        $this->assertEquals($data->state, "junk");
+        $this->assertEquals($data->state, "active");
         $this->assertEquals($data->email, "contact@youghourta.com");
 
         $response = $this->withHeaders([
                     'X-MailerLite-ApiKey' =>  $this->apiKey,
 
-                ])->json('PUT', "api/subscribers/contact@youghourta.com", ["state" => "dddd"]);
+                ])->json('PUT', "api/subscribers/contact@youghourta.com", ["state" => "junk"]);
         $data = $response->getData();
+
         $response->assertStatus(200);
-        $this->assertEquals($data->state, "active");
+        $this->assertEquals($data->state, "junk");
     }
 
     /**
